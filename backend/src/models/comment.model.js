@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const likeSchema = new Schema({
+const commentSchema = new Schema({
     content: {  // what you have comment
         type: String,
         required: true,
@@ -23,4 +23,4 @@ const likeSchema = new Schema({
     timestamps: true
 })
 
-export const Like = mongoose.model("Like", likeSchema)
+export const Comment = mongoose.model("Comment", commentSchema)
