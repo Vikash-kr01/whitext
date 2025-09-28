@@ -50,6 +50,7 @@ const userSchema = new Schema({
 }
 )
 
+// Hash password before save
 userSchema.pre('save', async function () {
     if (!this.isModified("password")) return
 
@@ -59,6 +60,15 @@ userSchema.pre('save', async function () {
         throw new Error(`ERROR_WHILE_HASHING_PASSWORD: ${error}`)
     }
 })
+
+
+// compare password when required
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+
+
 
 
 export const user = mongoose.model("User", userSchema);
