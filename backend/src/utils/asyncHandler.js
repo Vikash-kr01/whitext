@@ -1,5 +1,5 @@
 const asyncHandler = (fn) => {
-    async (req, res, next) => {
+    return async (req, res, next) => {
         try {
             const requestHandler = await fn(req, res, next)
             return requestHandler
