@@ -71,6 +71,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 })
 
+
 const loginUser = asyncHandler(async (req, res) => {
 
     /*  Todos
@@ -120,7 +121,35 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 
+const logoutUser = asyncHandler(async (req, res) => {
+    /*  Todos
+       1> find the user using req.user
+       2> remove refreshToken from that user
+       3> remove refreshToken and accessToken in response
+    */
 
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {refreshToken: ""}
+        },
+        {
+            new: true
+        }
+    )
+
+    const option = {
+        httpOnly: true,
+        secure: true
+    }
+    
+    return res
+    .status(200)
+    .clearCookie("refreshToken", option)
+    .clearCookie("accessToken", option)
+    .json(new ApiResponse(200, {}, "Successfully logout"))
+
+})
 
 
 
@@ -131,5 +160,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
 export {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

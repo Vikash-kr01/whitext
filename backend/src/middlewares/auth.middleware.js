@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 
-const verifyJWT = async (req, res, next) => {
+export const verifyJWT = async (req, res, next) => {
 
     try {
         const token = req.cookeis?.accessToken || req.header("Authorization").replace("Bearer ", "")
