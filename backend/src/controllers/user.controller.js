@@ -14,7 +14,7 @@ const generateAccessTokenRefreshToken = async (userId) => {
         const accessToken = await user.generateRefreshToken();
 
         user.refreshToken = refreshToken;
-        await user.save({validateBeforeSave: false});
+        await user.save({ validateBeforeSave: false });
         return { refreshToken, accessToken };
 
     } catch (error) {
@@ -106,7 +106,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
-    const {refreshToken, accessToken} = generateAccessTokenRefreshToken(user._id);
+    const { refreshToken, accessToken } = generateAccessTokenRefreshToken(user._id);
 
     const option = {
         httpOnly: true,
@@ -114,10 +114,10 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     return res
-    .status(200)
-    .cookie("refreshToken", refreshToken, option)
-    .cookie("accessToken", accessToken, option)
-    .json(new ApiResponse(200, {user: loggedInUser, refreshToken, accessToken}));
+        .status(200)
+        .cookie("refreshToken", refreshToken, option)
+        .cookie("accessToken", accessToken, option)
+        .json(new ApiResponse(200, { user: loggedInUser, refreshToken, accessToken }));
 
 })
 
@@ -132,7 +132,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $unset: {refreshToken: ""}
+            $unset: { refreshToken: "" }
         },
         {
             new: true
@@ -143,17 +143,17 @@ const logoutUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true
     }
-    
+
     return res
-    .status(200)
-    .clearCookie("refreshToken", option)
-    .clearCookie("accessToken", option)
-    .json(new ApiResponse(200, {}, "Successfully logout"))
+        .status(200)
+        .clearCookie("refreshToken", option)
+        .clearCookie("accessToken", option)
+        .json(new ApiResponse(200, {}, "Successfully logout"))
 
 })
 
 
-const refreshAccessToken = asyncHandler( async (req, res) => {
+const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
     if (!incomingRefreshToken) {
@@ -164,12 +164,12 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
 
     const user = await User.findById(decodedRefreshToken._id);
 
-    if(user?.refreshToken !== incomingRefreshToken){
+    if (user?.refreshToken !== incomingRefreshToken) {
         // await revokeAllUserTokens
         throw new ApiError(401, "ERROR: security violence detected. Please login again")
     }
 
-    const {refreshToken: newRefreshToken, accessToken} = generateAccessTokenRefreshToken(user._id);
+    const { refreshToken: newRefreshToken, accessToken } = generateAccessTokenRefreshToken(user._id);
 
     const option = {
         httpOnly: true,
@@ -177,10 +177,10 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
     }
 
     return res
-    .status(200)
-    .cookie("refreshToken", newRefreshToken, option)
-    .cookie("accessToken", accessToken, option)
-    .json(new ApiResponse(200, {accessToken, refreshToken: newRefreshToken}, ""))
+        .status(200)
+        .cookie("refreshToken", newRefreshToken, option)
+        .cookie("accessToken", accessToken, option)
+        .json(new ApiResponse(200, { accessToken, refreshToken: newRefreshToken }, ""))
 })
 
 
@@ -192,7 +192,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
         4> else create new password
     */
 
-    const {oldPassword, newPassword} = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user._id);
     const isValidPassword = await user.isPasswordCorrect(oldPassword);
@@ -213,10 +213,10 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     }
 
     return res
-    .status(200)
-    .clearCookie("accessToken", option)
-    .clearCookie("refreshToken", option)
-    .json(new ApiResponse(200, {}, "Password Change successfully"));
+        .status(200)
+        .clearCookie("accessToken", option)
+        .clearCookie("refreshToken", option)
+        .json(new ApiResponse(200, {}, "Password Change successfully"));
 })
 
 
