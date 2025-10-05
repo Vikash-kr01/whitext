@@ -184,6 +184,40 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
 })
 
 
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+    /* Todos
+        1> get old and new password frontend
+        2> a> compare oldPassword and DB password using bcrypt
+        3> if not a> throw error
+        4> else create new password
+    */
+
+    const {oldPassword, newPassword} = req.body;
+
+    const user = await User.findById(req.user._id);
+    const isValidPassword = await user.isPasswordCorrect(oldPassword);
+
+    if (!isValidPassword) {
+        throw new ApiError(400, "ERROR: Invalid Password")
+    }
+
+    const { refreshToken, accessToken } = await generateAccessTokenRefreshToken(user._id)
+
+    user.password = newPassword;
+    user.refreshToken = refreshToken;
+    await user.save()
+
+    const option = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "Password Change successfully"));
+})
 
 
 
@@ -192,5 +226,6 @@ export {
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    changeCurrentPassword
 }
