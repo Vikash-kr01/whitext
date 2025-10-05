@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js"
 import { passwordValidator } from "../utils/passwordValidator.js";
 import { emailValidator } from "../utils/emailValidator.js";
+import jwt from "jsonwebtoken";
 
 
 const generateAccessTokenRefreshToken = async (userId) => {
@@ -152,6 +153,35 @@ const logoutUser = asyncHandler(async (req, res) => {
 })
 
 
+const refreshAccessToken = asyncHandler( async (req, res) => {
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+
+    if (!incomingRefreshToken) {
+        throw new ApiError(404, "ERROR: refresh token not found")
+    }
+
+    let decodedRefreshToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await User.findById(decodedRefreshToken._id);
+
+    if(user?.refreshToken !== incomingRefreshToken){
+        // await revokeAllUserTokens
+        throw new ApiError(401, "ERROR: security violence detected. Please login again")
+    }
+
+    const {refreshToken: newRefreshToken, accessToken} = generateAccessTokenRefreshToken(user._id);
+
+    const option = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+    .status(200)
+    .cookie("refreshToken", newRefreshToken, option)
+    .cookie("accessToken", accessToken, option)
+    .json(new ApiResponse(200, {accessToken, refreshToken: newRefreshToken}, ""))
+})
 
 
 
