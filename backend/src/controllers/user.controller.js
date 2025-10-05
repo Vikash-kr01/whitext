@@ -227,6 +227,35 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 
+const updateAccountDetail = asyncHandler(async (req, res) => {
+    const {email, fullName, username, age} = req.body;
+
+    if (!email && !fullName && !username && !age) {
+        throw new ApiError(400, "Update field is empty");
+    }
+
+    let update = {};
+    if (email) update.email = email;
+    if (email) update.fullName = fullName;
+    if (email) update.username = username;
+    if (email) update.age = age;
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: { update }
+        },
+        {
+            new: true, runValidators: true
+        }
+    ).select("-password -refreshTokenk")
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "account details updated successfully"))
+
+})
+
 
 export {
     registerUser,
@@ -234,5 +263,6 @@ export {
     logoutUser,
     refreshAccessToken,
     changeCurrentPassword,
-    getCurrentUser
+    getCurrentUser,
+    updateAccountDetail
 }
