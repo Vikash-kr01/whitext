@@ -222,13 +222,13 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
 const getCurrentUser = asyncHandler(async (req, res) => {
     return res
-    .status(200)
-    .json(new ApiResponse(200, req.user, "current user fetched successfully"))
+        .status(200)
+        .json(new ApiResponse(200, req.user, "current user fetched successfully"))
 })
 
 
 const updateAccountDetail = asyncHandler(async (req, res) => {
-    const {email, fullName, username, age} = req.body;
+    const { email, fullName, username, age } = req.body;
 
     if (!email && !fullName && !username && !age) {
         throw new ApiError(400, "Update field is empty");
@@ -251,8 +251,8 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
     ).select("-password -refreshTokenk")
 
     return res
-    .status(200)
-    .json(new ApiResponse(200, user, "account details updated successfully"))
+        .status(200)
+        .json(new ApiResponse(200, user, "account details updated successfully"))
 
 })
 
