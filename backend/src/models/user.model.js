@@ -77,7 +77,7 @@ userSchema.methods.generateAccessToken = function () {
             email: this.email,
             username: this.username
         },
-        process.env.ACCESS_TOKEN_SERCRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
@@ -85,7 +85,7 @@ userSchema.methods.generateAccessToken = function () {
 }
 
 // create custom document instance methods to refreshToken
-userSchema.methods.generateRefreshToken = () => {
+userSchema.methods.generateRefreshToken = function () {
     return jwt.sign(
         {
             _id: this._id

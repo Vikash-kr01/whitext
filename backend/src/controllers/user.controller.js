@@ -10,8 +10,8 @@ import jwt from "jsonwebtoken";
 const generateAccessTokenRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
-        const refreshToken = await user.generateAccessToken();
-        const accessToken = await user.generateRefreshToken();
+        const refreshToken = user.generateAccessToken();
+        const accessToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
@@ -84,10 +84,10 @@ const loginUser = asyncHandler(async (req, res) => {
         6> send user in response by selecting ("-password -refreshToken") 
     */
 
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
 
-    if (!email || !password) {
-        throw new ApiError(400, "LOGIN_ERROR: please enter a valid email or password")
+    if ((!email && !username) || !password) {
+        throw new ApiError(400, "LOGIN_ERROR: email/username and password is required")
     }
 
     const user = await User.findOne({
@@ -106,7 +106,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
-    const { refreshToken, accessToken } = generateAccessTokenRefreshToken(user._id);
+    const { refreshToken, accessToken } = await generateAccessTokenRefreshToken(user._id);
 
     const option = {
         httpOnly: true,
@@ -264,5 +264,5 @@ export {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
-    updateAccountDetail
+    updateAccountDetail,
 }
