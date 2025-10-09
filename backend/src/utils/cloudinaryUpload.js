@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+import fs from "fs"
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,7 +8,7 @@ cloudinary.config({
 });
 
 export const uploadOnCloudinary = async function (localFilePath) {
-    try{
+    try {
         if (!localFilePath) return null
         const response = await cloudinary.uploader.upload(
             localFilePath,
@@ -18,9 +19,23 @@ export const uploadOnCloudinary = async function (localFilePath) {
         )
         // console.log("RESPONSE_OF_CLOUDINARY", response)   // check bottom for what it throw
         console.log("file has been uploaded in cloudinary ", response.url)
+        fs.unlink(localFilePath, (err) => {
+            if (err) {
+                console.log(`UNLINK_ERROR: error while unlink file from local file path in cloudinaryUpload`)
+                throw new Error(`ERROR: ${err}`)
+            }
+            console.log("File has been unlinked from local file path");
+        })
 
     } catch (error) {
         console.log(`CLOUDINARY_UPLOAD_ERROR: ${error}`)
+        fs.unlink(localFilePath, (err) => {
+            if (err) {
+                console.log(`UNLINK_ERROR: error while unlink file from local file path in cloudinaryUpload`)
+                throw new Error(`ERROR: ${err}`)
+            }
+            console.log("File has been unlinked from local file path");
+        })
     }
 }
 
