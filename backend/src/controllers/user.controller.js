@@ -10,15 +10,15 @@ import jwt from "jsonwebtoken";
 const generateAccessTokenRefreshToken = async (userId) => {
     try {
         const user = await User.findById(userId);
-        const refreshToken = user.generateAccessToken();
-        const accessToken = user.generateRefreshToken();
+        const refreshToken = user.generateRefreshToken();
+        const accessToken = user.generateAccessToken();
 
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
         return { refreshToken, accessToken };
 
     } catch (error) {
-
+        throw new ApiError(500, "ERROR: error while generating access token and refresh token");
     }
 }
 
@@ -107,6 +107,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
     const { refreshToken, accessToken } = await generateAccessTokenRefreshToken(user._id);
+    console.log("generated tokens")
 
     const option = {
         httpOnly: true,
@@ -117,7 +118,7 @@ const loginUser = asyncHandler(async (req, res) => {
         .status(200)
         .cookie("refreshToken", refreshToken, option)
         .cookie("accessToken", accessToken, option)
-        .json(new ApiResponse(200, { user: loggedInUser, refreshToken, accessToken }));
+        .json(new ApiResponse(200, { user: loggedInUser, refreshToken, accessToken }, "User logged in successfully"));
 
 })
 
@@ -255,6 +256,7 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, user, "account details updated successfully"))
 
 })
+
 
 
 export {
