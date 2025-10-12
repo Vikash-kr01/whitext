@@ -35,7 +35,13 @@ const userSchema = new Schema({
     profilePicture: {
         type: String
     },
+    profilePicturePublicId: {
+        type: String
+    },
     coverImage: {
+        type: String
+    },
+    coverImagePublicId: {
         type: String
     },
     password: {

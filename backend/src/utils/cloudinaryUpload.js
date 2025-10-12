@@ -26,6 +26,8 @@ export const uploadOnCloudinary = async function (localFilePath) {
             }
             console.log("File has been unlinked from local file path");
         })
+        
+        return response
 
     } catch (error) {
         console.log(`CLOUDINARY_UPLOAD_ERROR: ${error}`)
