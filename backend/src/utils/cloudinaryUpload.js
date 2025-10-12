@@ -21,7 +21,7 @@ export const uploadOnCloudinary = async function (localFilePath) {
         console.log("file has been uploaded in cloudinary ", response.url)
         fs.unlink(localFilePath, (err) => {
             if (err) {
-                console.log(`UNLINK_ERROR: error while unlink file from local file path in cloudinaryUpload`)
+                console.log(`UNLINK_ERROR: cloudinary error while unlink local file`)
                 throw new Error(`ERROR: ${err}`)
             }
             console.log("File has been unlinked from local file path");
