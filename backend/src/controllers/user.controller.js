@@ -5,6 +5,8 @@ import { User } from "../models/user.model.js"
 import { passwordValidator } from "../utils/passwordValidator.js";
 import { emailValidator } from "../utils/emailValidator.js";
 import jwt from "jsonwebtoken";
+import { uploadOnCloudinary } from "../utils/cloudinaryUpload.js";
+import { cloudinaryDelete } from "../utils/cloudinaryDelete.js";
 
 
 const generateAccessTokenRefreshToken = async (userId) => {
@@ -258,6 +260,64 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
 })
 
 
+const updateProfilePicture = asyncHandler(async (req, res) => {
+    /*  Todos (upload profilePicture and coverImage with one controller)
+        1> get image/data - frontend (if not throw error)
+        2> upload image - cloudinary (if not throw error)
+        3> update image's url and public in DB
+        4> return response
+    */
+
+    const localImagePath = req.file?.path;
+    // see bottom a> to see console.log(req.file)
+    if (!localImagePath) {
+        throw new ApiError(400, "ERROR: an image is required")
+    }
+
+    const uploadedImage = await uploadOnCloudinary(localImagePath);
+    if (!uploadedImage || !uploadedImage?.url) {
+        throw new ApiError(500, "ERROR: after uploading image get nothing in return")
+    }
+
+    const fieldName = req.file?.fieldname;  // coverImage
+    const nameOfImageAndItsPublicId = req.file?.fieldname + "PublicId";
+    // for coverImage nameOfImageAndItsPublicId = coverImagePublicId
+    
+    const user = await User.findById(req.user?._id);
+
+    const deletedItem = await cloudinaryDelete([user[nameOfImageAndItsPublicId]])
+    console.log(deletedItem)
+    
+    if(!deletedItem) {
+        throw new ApiError(500, `Faided to delete previous image while updating ${fieldName}`);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+            $set: {
+                [fieldName]: uploadedImage.url,
+                [nameOfImageAndItsPublicId]: uploadedImage.public_id
+            },
+        },
+        {
+            new: true
+        }
+    ).select("-password -refreshToken");
+
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {updatedUser, deletedItem}, `${fieldName} updated successfully`))
+
+})
+
+
+
+
+
+
+
 
 export {
     registerUser,
@@ -267,4 +327,22 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetail,
+    updateProfilePicture
 }
+
+
+
+
+
+/* a> console.log(req.file)
+{
+    "fieldname": "profilePicture",
+    "originalname": "lion.jpg",
+    "encoding": "7bit",
+    "mimetype": "image/jpeg",
+    "destination": "./public/temp",
+    "filename": "lion.jpg",
+    "path": "public\\temp\\lion.jpg",
+    "size": 4091
+}
+*/
