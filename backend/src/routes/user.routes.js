@@ -29,5 +29,6 @@ router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 router.route("/current-user").post(verifyJWT, getCurrentUser);
 router.route("/update-account").post(verifyJWT, updateAccountDetail);
 router.route("/update-profile-picture").post(verifyJWT, upload.single("profilePicture"), updateProfilePicture)
+router.route("/update-cover-image").post(verifyJWT, upload.single("coverImage"), updateProfilePicture)
 
 export default router;
