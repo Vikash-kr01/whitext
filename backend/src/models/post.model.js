@@ -12,7 +12,7 @@ const postSchema = new Schema({
     },
     videoFiles: [{ type: Schema.Types.ObjectId, ref: "Video" }],
     imageFiles: [{type: Mongoose.Schema.Types.ObjectId, ref: "Image"}],
-    reTweet: {type: Schema.Types.ObjectId, ref: "Post"},
+    rePost: {type: Schema.Types.ObjectId, ref: "Post"},
     views: {type: Number},
     isPublished: {
         type: String,
