@@ -262,7 +262,7 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
 
 const updatePicture = asyncHandler(async (req, res) => {
     const localImagePath = req.file?.path;
-    if(!localImagePath) {
+    if (!localImagePath) {
         throw new ApiError(400, "One image is required");
     }
 
@@ -270,14 +270,14 @@ const updatePicture = asyncHandler(async (req, res) => {
     const updatingImageNamePublicId = updatingImageName + "PublicId"
 
     const user = await User.findById(req.user?._id);
-    
-    const deletePriviousImageCloudinary = await cloudinaryDelete([user[updatingImageNamePublicId]])  
+
+    const deletePriviousImageCloudinary = await cloudinaryDelete([user[updatingImageNamePublicId]])
     if (!deletePriviousImageCloudinary) {
         throw new ApiError(500, "Can't able to delete image from cloudinary right now")
     }
 
     const uploadImageCloudinary = await uploadOnCloudinary(localImagePath);
-    if(!uploadImageCloudinary) {
+    if (!uploadImageCloudinary) {
         throw new ApiError(500, "Can't able to upload image to cloudinary right now")
     }
 
@@ -291,8 +291,8 @@ const updatePicture = asyncHandler(async (req, res) => {
     delete updatedUser.refreshToken;
 
     return res
-    .status(200)
-    .json(new ApiResponse(200, {user, deletedImage: deletePriviousImageCloudinary}, `${updatingImageName} has updated successfully`))
+        .status(200)
+        .json(new ApiResponse(200, { user, deletedImage: deletePriviousImageCloudinary }, `${updatingImageName} has updated successfully`))
 
 })
 

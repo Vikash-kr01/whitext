@@ -11,9 +11,9 @@ const postSchema = new Schema({
         trim: true
     },
     videoFiles: [{ type: Schema.Types.ObjectId, ref: "Video" }],
-    imageFiles: [{type: Mongoose.Schema.Types.ObjectId, ref: "Image"}],
-    rePost: {type: Schema.Types.ObjectId, ref: "Post"},
-    views: {type: Number},
+    imageFiles: [{ type: Mongoose.Schema.Types.ObjectId, ref: "Image" }],
+    rePost: { type: Schema.Types.ObjectId, ref: "Post" },
+    views: { type: Number },
     isPublished: {
         type: String,
         enum: ["public", "follower", "private"],
