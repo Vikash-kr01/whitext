@@ -260,58 +260,41 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
 })
 
 
-const updateProfilePicture = asyncHandler(async (req, res) => {
-    /*  Todos (upload profilePicture and coverImage with one controller)
-        1> get image/data - frontend (if not throw error)
-        2> upload image - cloudinary (if not throw error)
-        3> update image's url and public in DB
-        4> return response
-    */
-
+const updatePicture = asyncHandler(async (req, res) => {
     const localImagePath = req.file?.path;
-    // see bottom a> to see console.log(req.file)
-    if (!localImagePath) {
-        throw new ApiError(400, "ERROR: an image is required")
+    if(!localImagePath) {
+        throw new ApiError(400, "One image is required");
     }
 
-    const uploadedImage = await uploadOnCloudinary(localImagePath);
-    if (!uploadedImage || !uploadedImage?.url) {
-        throw new ApiError(500, "ERROR: after uploading image get nothing in return")
-    }
+    const updatingImageName = req.file?.fieldname;
+    const updatingImageNamePublicId = updatingImageName + "PublicId"
 
-    const fieldName = req.file?.fieldname;  // coverImage
-    const nameOfImageAndItsPublicId = req.file?.fieldname + "PublicId";
-    // for coverImage nameOfImageAndItsPublicId = coverImagePublicId
-    
     const user = await User.findById(req.user?._id);
-
-    const deletedItem = await cloudinaryDelete([user[nameOfImageAndItsPublicId]])
-    console.log(deletedItem)
     
-    if(!deletedItem) {
-        throw new ApiError(500, `Faided to delete previous image while updating ${fieldName}`);
+    const deletePriviousImageCloudinary = await cloudinaryDelete([user[updatingImageNamePublicId]])  
+    if (!deletePriviousImageCloudinary) {
+        throw new ApiError(500, "Can't able to delete image from cloudinary right now")
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-        user._id,
-        {
-            $set: {
-                [fieldName]: uploadedImage.url,
-                [nameOfImageAndItsPublicId]: uploadedImage.public_id
-            },
-        },
-        {
-            new: true
-        }
-    ).select("-password -refreshToken");
+    const uploadImageCloudinary = await uploadOnCloudinary(localImagePath);
+    if(!uploadImageCloudinary) {
+        throw new ApiError(500, "Can't able to upload image to cloudinary right now")
+    }
 
+    user[updatingImageName] = uploadImageCloudinary.secure_url;
+    user[updatingImageNamePublicId] = uploadImageCloudinary.public_id;
+
+    await user.save();
+
+    const updatedUser = user.toObject();
+    delete updatedUser.password;
+    delete updatedUser.refreshToken;
 
     return res
     .status(200)
-    .json(new ApiResponse(200, {updatedUser, deletedItem}, `${fieldName} updated successfully`))
+    .json(new ApiResponse(200, {user, deletedImage: deletePriviousImageCloudinary}, `${updatingImageName} has updated successfully`))
 
 })
-
 
 
 
@@ -327,7 +310,7 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetail,
-    updateProfilePicture
+    updatePicture
 }
 
 
