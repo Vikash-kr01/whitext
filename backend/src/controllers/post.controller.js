@@ -19,7 +19,8 @@ const createPost = asyncHandler(async (req, res) => {
     const { text, isPublished } = req.body;
     const files = req.files; // comes from multer
 
-    const uploadMedia = await Promise.all(
+    const uploadMedia = await Promise.all( // b>
+    // another way to do this from b>
         files.map(async (file, index) => {
             // const resourceType = file.mimetype.startsWith("video") ? "video" : "image";
             const result = await uploadOnCloudinary(file.path);
@@ -92,4 +93,27 @@ export {
             size: 5175930
         }
 ]
+*/
+
+
+/*  b> another way to do that
+    const uploadedMedia = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const resourceType = file.mimetype.startsWith("video") ? "video" : "image";
+
+      const result = await uploadToCloudinary(file.buffer, "posts", resourceType);
+
+      uploadedMedia.push({
+        publicId: result.public_id,
+        url: result.secure_url,
+        resourceType: result.resource_type,
+        format: result.format,
+        width: result.width,
+        height: result.height,
+        duration: result.duration,
+        size: result.bytes,
+        order: i
+      });
+    }
 */
