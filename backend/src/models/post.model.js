@@ -1,10 +1,10 @@
-import mongoose, { Mongoose, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const mediaSchema = new Schema({
     publicId: { type: String, required: true },
     url: { type: String, required: true },
     resourceType: { type: String, enum: ["image", "video", "raw"], required: true },
-    formate: { type: String },
+    format: { type: String },
     width: { type: Number },
     height: { type: Number },
     duration: { type: Number },
@@ -16,7 +16,7 @@ const mediaSchema = new Schema({
 
 const postSchema = new Schema({
     owner: {
-        type: Mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
