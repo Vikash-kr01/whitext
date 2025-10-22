@@ -3,8 +3,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinaryUpload.js";
+import { cloudinaryDelete } from "../utils/cloudinaryDelete.js";
 import { Post } from "../models/post.model.js";
-
+import mongoose from "mongoose";
+import { Comment } from "../models/comment.model.js"
+import { Likes } from "../models/like.model.js"
 
 
 const createPost = asyncHandler(async (req, res) => {
@@ -20,7 +23,7 @@ const createPost = asyncHandler(async (req, res) => {
     const files = req.files; // comes from multer
 
     const uploadMedia = await Promise.all( // b>
-    // another way to do this from b>
+        // another way to do this from b>
         files.map(async (file, index) => {
             // const resourceType = file.mimetype.startsWith("video") ? "video" : "image";
             const result = await uploadOnCloudinary(file.path);
@@ -47,15 +50,64 @@ const createPost = asyncHandler(async (req, res) => {
     })
 
     return res
-    .status(200)
-    .json(new ApiResponse(200, post, "Post created successfully"));
+        .status(200)
+        .json(new ApiResponse(200, post, "Post created successfully"));
+})
+
+
+const deletePost = asyncHandler(async (req, res) => {
+    const postId = req.params?.postId;
+    if (!postId && !mongoose.isValidObjectId(postId)) {
+        throw new ApiError(400, "Invalid post id");
+    }
+
+    const post = await Post.findById(postId);
+    if (!post) {
+        throw new ApiError(400, "post not found while deleting");
+    }
+
+    const owner = post.owner;
+    const user = req.user._id;
+    if (String(owner) !== String(user)) {
+        throw new ApiError(402, "Unauthorized to take this action");
+    }
+
+    let deleteMediaFromCloudinary;
+    if (user.media) {
+        deleteMediaFromCloudinary = await Promise.allSettled(
+            user.media.map(async (file) => {
+                await cloudinaryDelete(file.publicId);
+            })
+        )
+    }
+
+    if (!deleteMediaFromCloudinary) {
+        throw new ApiError(500, "Can't able to delete media file from cloudinary")
+    }
+
+    const deletedComments = await Comment.deleteMany({ post: post._id });
+    if (deletedComments) console.log(`deleted comments count ${deletedComments.deletedCount}`);
+    const deletedLikes = await Likes.deleteMany({post: post._id});
+    if (deletedLikes) console.log(`deleted comments count ${deletedLikes.deletedCount}`);
+
+    const deletedPost = await post.deleteOne();
+
+    if (!deletedPost) {
+        throw new ApiError(500, "Invalid post id or internal error while deleting post");
+    }
+
+    return res
+        .status(400)
+        .json(new ApiResponse(200, { deleteMediaFromCloudinary, deletePost }, "Deleted post successfully"));
 })
 
 
 
 
+
 export {
-    createPost
+    createPost,
+    deletePost
 }
 
 
