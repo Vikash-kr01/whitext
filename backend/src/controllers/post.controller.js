@@ -163,11 +163,39 @@ const updatePost = asyncHandler(async (req, res) => {
 })
 
 
+const repost = asyncHandler(async (req, res) => {
+    const { postId } = req.params;
+    if (!postId || mongoose.isValidObjectId(postId)) {
+        throw new ApiError(400, "Invalid post id found")
+    }
+
+    const post = await Post.findById(postId);
+    if (!post) {
+        throw new ApiError(400, "post not found while reposting")
+    }
+
+    const text = req.body?.text;
+
+    const repostPost = await Post.create(
+        {
+            owner: req.user?._id,
+            text: text ? text : "",
+            repost: postId
+        }
+    )
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, repost, "repost post successfully"))
+})
+
+
 
 export {
     createPost,
     deletePost,
     updatePost,
+    repost,
 
 }
 
