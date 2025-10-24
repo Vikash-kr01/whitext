@@ -7,7 +7,7 @@ import { cloudinaryDelete } from "../utils/cloudinaryDelete.js";
 import { Post } from "../models/post.model.js";
 import mongoose from "mongoose";
 import { Comment } from "../models/comment.model.js"
-import { Likes } from "../models/like.model.js"
+import { Like } from "../models/like.model.js"
 
 
 const createPost = asyncHandler(async (req, res) => {
@@ -87,7 +87,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
     const deletedComments = await Comment.deleteMany({ post: post._id });
     if (deletedComments) console.log(`deleted comments count ${deletedComments.deletedCount}`);
-    const deletedLikes = await Likes.deleteMany({post: post._id});
+    const deletedLikes = await Likes.deleteMany({ post: post._id });
     if (deletedLikes) console.log(`deleted comments count ${deletedLikes.deletedCount}`);
 
     const deletedPost = await post.deleteOne();
@@ -101,13 +101,74 @@ const deletePost = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, { deleteMediaFromCloudinary, deletePost }, "Deleted post successfully"));
 })
 
+const updatePost = asyncHandler(async (req, res) => {
+    const { postId } = req.params;
+    if (!postId && mongoose.isValidObjectId(postId)) {
+        throw new ApiError(400, "Post id not found");
+    }
 
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+        throw new ApiError(400, "Invalid id to find a post");
+    }
+
+    const userId = req.user._id;
+    const postOwner = post.owner;
+    if (String(userId) !== String(postOwner)) {
+        throw new ApiError(502, "Unauthorized to delete this post");
+    }
+
+    const { text } = req.body;
+    if (!text && !post.media) {
+        throw new ApiError(400, "Invalid update: require some text to update");
+    }
+    post.text = text;
+
+
+    const { updateMedia } = req.body;
+    let deletedMedia;
+    let updatedMedia;
+    if (updateMedia) {
+        deletedMedia = await Promise.allSettled(
+            post.media.map(async (mediaFile) => {
+                return await cloudinaryDelete(mediaFile.publicId)
+            })
+        )
+        // post.media = "";
+        if (req.files && Array.isArray(req.files) && req.files.length) {
+            updatedMedia = await Promise.allSettled(
+                req.files.map(async (file, index) => {
+                    const result = await uploadOnCloudinary(file.path)
+                    return {
+                        publicId: result.public_id,
+                        url: result.secure_url,
+                        resourceType: result.resource_type,
+                        format: result.format,
+                        width: result.width,
+                        height: result.height,
+                        size: result.size,
+                        order: index
+                    }
+                })
+            )
+            post.media = updatedMedia;
+        }
+    }
+
+    await post.save();
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, post, "Post updated successfully"))
+})
 
 
 
 export {
     createPost,
-    deletePost
+    deletePost,
+    updatePost,
+
 }
 
 
