@@ -174,13 +174,34 @@ const repost = asyncHandler(async (req, res) => {
         throw new ApiError(400, "post not found while reposting")
     }
 
+    let media
+    if (req.files || Array.isArray(req.files?.files) || req.files?.files.length) {
+        media = await Promise.allSettled(
+            req.files?.files.map(async (file) => {
+                const result = await uploadOnCloudinary(file.path);
+                return {
+                    publicId: result.public_id,
+                    url: result.secure_url,
+                    resourceType: result.resource_type,
+                    format: result.format,
+                    width: result.width,
+                    height: result.height,
+                    duration: result.duration,
+                    size: result.size,
+                    order: index
+                }
+            })
+        )
+    }
+
     const text = req.body?.text;
 
     const repostPost = await Post.create(
         {
             owner: req.user?._id,
             text: text ? text : "",
-            repost: postId
+            repost: postId,
+            media: media
         }
     )
 

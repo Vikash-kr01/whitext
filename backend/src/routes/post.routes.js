@@ -15,6 +15,6 @@ const router = Router();
 router.route("/create-post").post(verifyJWT, upload.array("files", 6), createPost);
 router.route("/delete-post/:postId").delete(verifyJWT, deletePost)
 router.route("/update-post/:postId").patch(verifyJWT, upload.array("files", 6), updatePost);
-router.route("/repost-post/:postId").post(repost)
+router.route("/repost-post/:postId").post(verifyJWT, upload.array('files', 6),repost)
 
 export default router;  
