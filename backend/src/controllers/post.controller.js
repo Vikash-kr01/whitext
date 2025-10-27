@@ -211,12 +211,70 @@ const repost = asyncHandler(async (req, res) => {
 })
 
 
+const getUserPosts = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    if (!userId || !mongoose.isValidObjectId(userId)) {
+        throw new ApiError(400, "user's id not found while getting user's post");
+    }
+
+    const user = await User.aggregate([
+        {
+            $match: { _id: mongoose.Types.ObjectId(userId) }
+        },
+        {
+            $lookup: {
+                from: "posts",
+                localField: "_id",
+                foreignField: "owner",
+                as: "posts",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        avatar: 1,
+                                        username: 1,
+                                        fullName: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields: {
+                            owner: {
+                                $first: "$owner"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ])
+
+    if (!user) {
+        throw new ApiError(404, "userid not found while fetching posts of user")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user[0].posts, "user posts get successfully"))
+
+})
+
+
 
 export {
     createPost,
     deletePost,
     updatePost,
     repost,
+    getUserPosts,
 
 }
 
