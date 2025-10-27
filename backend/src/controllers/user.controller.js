@@ -297,6 +297,72 @@ const updatePicture = asyncHandler(async (req, res) => {
 })
 
 
+const getUserDetails = asyncHandler(async (req, res) => {
+    const { username } = req.params;
+
+    if (!username || !username?.trim()) {
+        throw new ApiError(400, "username is missing");
+    }
+
+    const userDetailed = await User.aggregate([
+        {
+            $match: { username: username?.toLowerCase() }
+        },
+        {
+            $lookup: {
+                from: "follows",
+                localField: "_id",
+                foreignField: "following",
+                as: "followers"
+            }
+        },
+        {
+            $lookup: {
+                from: "follows",
+                localField: "_id",
+                foreignField: "follower",
+                as: "following"
+            }
+        },
+        {
+            $addFields: {
+                followersCount: {
+                    $size: "$followers",
+                },
+                followingCount: {
+                    $size: "$following"
+                },
+                isFollowed: {
+                    $cond: {
+                        if: {$in: [req.user?._id, "$followers.follower"]},
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                username: 1,
+                fullName: 1,
+                email: 1,
+                gender: 1,
+                profilePicture: 1,
+                coverImage: 1,
+                dateOfBirth: 1,
+                followersCount: 1,
+                followingCount: 1,
+                isFollowed: 1
+            }
+        }
+    ])
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, userDetailed[0], "user detailed send successfully"));
+})
+
+
 
 
 
@@ -310,7 +376,9 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetail,
-    updatePicture
+    updatePicture,
+    getUserDetails,
+    
 }
 
 
