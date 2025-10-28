@@ -17,6 +17,7 @@ app.use(cookieParser());
 // Import routes
 import userRouter from "./routes/user.routes.js";
 import postRouter from "./routes/post.routes.js"
+import likeRouter from "./routes/like.routes.js";
 
 
 // routes declaration
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/app/api/v1/user", userRouter)
 app.use("/app/api/v1/post", postRouter)
+app.use("/app/api/v1/like", likeRouter)
 
 
 
