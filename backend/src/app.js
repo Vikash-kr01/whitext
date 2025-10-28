@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/app/api/v1/user", userRouter)
 app.use("/app/api/v1/post", postRouter)
-app.use("/app/api/v1/like", likeRouter)
+app.use("/app/api/v1/toggle-like", likeRouter)
 
 
 
