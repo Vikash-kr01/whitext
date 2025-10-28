@@ -19,7 +19,7 @@ const toggleLikeOfPost = asyncHandler(async (req, res) => {
     let likeStatus;
 
     const likedPost = await Like.findOne({ post: postId, likedBy: user });
-    if (likePost) {
+    if (likedPost) {
         await Like.deleteOne(likedPost._id);
         likeStatus = "unlike"
     }
@@ -43,7 +43,37 @@ const toggleLikeOfPost = asyncHandler(async (req, res) => {
 })
 
 
+const toggleLikeOfComment = asyncHandler(async (req, res) => {
+    const commentId = req.params?.commentId;
+    const userId = req.user?._id;
 
+    if (!commentId || isValidObjectId(commentId)) {
+        throw new ApiError(404, "Invalid comment id found")
+    }
+
+    if (!userId) {
+        throw new ApiError(404, "user id not found");
+    }
+
+    let likeStatus;
+
+    const likedComment = await Like.findOne({likedBy: userId, comment: commentId});
+    if (likedComment) {
+        await Like.deleteOne(likedComment._id);
+        likeStatus = "unliked"
+    }
+    else {
+        let likeComment = await Like.create({likedBy: userId, comment: commentId})
+        if (!likeComment) {
+            throw new ApiError(500, "internal error while like a comment");
+        }
+        likeStatus = "liked"
+    }
+
+    return res
+    .status(200)
+    .jso(new ApiResponse(200, {}, `comment ${likeStatus} successfully`))
+})
 
 
 
@@ -51,5 +81,5 @@ const toggleLikeOfPost = asyncHandler(async (req, res) => {
 
 export {
     toggleLikeOfPost,
-
+    toggleLikeOfComment
 }
