@@ -7,7 +7,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route('/post/:postId').post(commentOnPost)
+router.route('/post/:postId').post(verifyJWT, commentOnPost);
 router.route('/comment/:commentId').post(verifyJWT, commentOnComment);
 
 export default router;
