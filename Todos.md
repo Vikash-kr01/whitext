@@ -5,3 +5,6 @@
 
 ## User
 * get user details, even followed or not
+
+
+## Multer setup with crypto
