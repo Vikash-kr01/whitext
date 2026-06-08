@@ -23,7 +23,7 @@ import commentRouter from "./routes/comment.routes.js";
 
 // routes declaration
 app.get("/", (req, res) => {
-    res.send("Hello world")
+    res.send("Welcome to whitext")
 })
 
 app.use("/app/api/v1/user", userRouter)
