@@ -6,9 +6,9 @@ export default function AppLayout() {
   return (
     <div>
       <Navbar />
-      {/* <main style={{ padding: "20px" }}> */}
+      <main style={{ padding: "20px" }}>
         <Outlet />
-      {/* </main> */}
+      </main>
     </div>
   );
 }
