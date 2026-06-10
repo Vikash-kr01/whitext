@@ -1,0 +1,57 @@
+.login {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.form {
+    width: 650px;
+    height: 450px;
+    background: linear-gradient(0deg, #d66712, #00000000);
+    border-radius: 5px;
+    padding: 20px;
+    border: 0.5px solid #373737;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 35px;
+}
+
+h4 {
+    font-size: 25px;
+    font-weight: 600;
+    padding: 20px;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 23px;
+}
+
+.form input {
+    padding: 12px;
+    width: 400px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #150e0e96;
+    color: #fff;
+}
+
+form .submit {
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+form .submit:disabled {
+    cursor: no-drop;
+    opacity: 0.5;
+}
