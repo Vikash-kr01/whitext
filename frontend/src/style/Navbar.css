@@ -1,7 +1,4 @@
-
-
-
-nav{
+nav {
   display: flex;
   gap: 34px;
   background-color: rgb(55, 67, 92);
@@ -12,7 +9,7 @@ nav{
 }
 
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -23,7 +20,6 @@ nav{
 .navbar-container {
   max-width: 1350px;
   margin: 0 auto;
-  
 }
 
 .navbar.show {
@@ -34,22 +30,13 @@ nav{
   transform: translateY(-100%);
 }
 
-li{
-  list-style: none;
-  font-weight: 700;
-  font-size: 16px;
-  font-family: sans-serif;
-}
-
-a{
+a {
   text-decoration: none;
   color: whitesmoke;
   height: 100%;
   padding: 20px;
 }
 
-
-.red{
-  background-color: red;  
+.red {
+  background-color: red;
 }
-
