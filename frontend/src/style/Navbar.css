@@ -1,42 +1,48 @@
 nav {
-  display: flex;
-  gap: 34px;
-  background-color: rgb(55, 67, 92);
+  background-color: rgb(36, 46, 68);
   color: white;
   margin-bottom: 30px;
   font-weight: 600;
   font-size: 16px;
+  height: 100%;
+  width: 300px;
 }
 
-.navbar {
-  position: sticky;
-  top: 0;
-  left: 0;
+nav ul li{
+  list-style: none;
+}
+
+ul li a {
   width: 100%;
-  transition: transform 0.3s ease;
-  z-index: 1000;
-}
-
-.navbar-container {
-  max-width: 1350px;
-  margin: 0 auto;
-}
-
-.navbar.show {
-  transform: translateY(0);
-}
-
-.navbar.hide {
-  transform: translateY(-100%);
-}
-
-a {
   text-decoration: none;
   color: whitesmoke;
-  height: 100%;
-  padding: 20px;
+  padding: 10px;
+  display: inline-block;
 }
 
-.red {
-  background-color: red;
+ul li a:hover .nav-btn{
+  background-color: black;
+}
+
+.nav-btn{
+  display: flex;
+  gap: 15px;
+  width: max-content;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 25px 8px 8px;
+  border-radius: 30px;
+}
+
+ul li a .icon {
+  font-size: 28px;
+}
+
+ul li a .tag-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.bold .tag-name{
+  font-weight: 700;
 }

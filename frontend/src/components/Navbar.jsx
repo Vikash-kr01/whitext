@@ -1,38 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router";
 import "../style/Navbar.css";
 
+import { NavLink } from "react-router";
+
+import { MdHome } from "react-icons/md";
+import { IoMdNotifications } from "react-icons/io";
+import { FcBusinessman } from "react-icons/fc";
+import { IoMdSettings } from "react-icons/io";
+
 const Navbar = () => {
-  const [showNavbar, setShowNavbar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY) {
-        // Scrolling down
-        setShowNavbar(false);
-      } else {
-        // Scrolling up
-        setShowNavbar(true);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollY]);
+  const handleIsActive = (e) => {
+    return e.isActive ? "bold" : "";
+  };
 
   return (
-    <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
-      <NavLink to={"/home"}>Home</NavLink>
-      <NavLink to={"/notifications"}>Notification</NavLink>
-      <NavLink to={"/profile"}>Profile</NavLink>
+    <nav>
+      <ul>
+        <li>
+          <NavLink className={handleIsActive} to={"/home"}>
+            <div className="nav-btn">
+              <MdHome className="icon" />
+              <h6 className="tag-name">Home</h6>
+            </div>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={handleIsActive} to={"/notifications"}>
+            <div className="nav-btn">
+              <IoMdNotifications className="icon" />
+              <h6 className="tag-name">Notifications</h6>
+            </div>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={handleIsActive} to={"/profile"}>
+            <div className="nav-btn">
+              <FcBusinessman className="icon" />
+              <h6 className="tag-name">Profile</h6>
+            </div>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={handleIsActive} to={"/settings"}>
+            <div className="nav-btn">
+              <IoMdSettings className="icon" />
+              <h6 className="tag-name">Settings</h6>
+            </div>
+          </NavLink>
+        </li>
+      </ul>
     </nav>
   );
 };

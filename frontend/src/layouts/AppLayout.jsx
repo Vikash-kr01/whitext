@@ -1,12 +1,12 @@
 import { Outlet } from "react-router";
-// import Navbar from "../Components/Navbar";
 import Navbar from "../components/Navbar.jsx";
+import "../style/AppLayout.css";
 
 export default function AppLayout() {
   return (
-    <div>
+    <div className="layout">
       <Navbar />
-      <main style={{ padding: "20px" }}>
+      <main >
         <Outlet />
       </main>
     </div>

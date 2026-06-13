@@ -23,15 +23,15 @@ const router = createBrowserRouter([
     {
         Component: AccountLayout,
         children: [
-            { path: "settings", Component: Settings },   
         ]
     },
     {
         Component: AppLayout,
         children: [
-			{ path: "home", Component: Home },   
+            { path: "home", Component: Home },   
 			{ path: "profile", Component: Profile },   
 			{ path: "notifications", Component: Notification },   
+            { path: "settings", Component: Settings },   
 		],
     },
     {
