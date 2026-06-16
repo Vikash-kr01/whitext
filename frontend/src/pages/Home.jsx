@@ -1,9 +1,21 @@
 import React from 'react'
+import "../style/Home.css"
 
 const Home = () => {
   return (
-    <div>
-      <h1>Thsi is home page</h1>
+    <div className='home'>
+      <div className="mid-page">
+        <div className="for-you-following">
+          <div className="for-you">
+            For You
+          </div>
+          <div className="following">
+            Following
+          </div>
+        </div>
+        <div className="blur-line">as</div>
+      </div>
+      <div className="right-page">Middle page</div>
     </div>
   )
 }

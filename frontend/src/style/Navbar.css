@@ -5,10 +5,13 @@ nav {
   font-weight: 600;
   font-size: 16px;
   height: 100%;
-  width: 300px;
+  width: 23%;
+  min-width: 250px;
+  position: fixed;
+  top: 0;
 }
 
-nav ul li{
+nav ul li {
   list-style: none;
 }
 
@@ -20,11 +23,11 @@ ul li a {
   display: inline-block;
 }
 
-ul li a:hover .nav-btn{
+ul li a:hover .nav-btn {
   background-color: black;
 }
 
-.nav-btn{
+.nav-btn {
   display: flex;
   gap: 15px;
   width: max-content;
@@ -43,6 +46,6 @@ ul li a .tag-name {
   font-weight: 600;
 }
 
-.bold .tag-name{
+.bold .tag-name {
   font-weight: 700;
 }
