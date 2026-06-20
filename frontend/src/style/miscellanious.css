@@ -2,3 +2,11 @@
 .error{
   color: red;
 }
+
+.main-body{
+  width: 1000px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  gap: 10px;
+}
