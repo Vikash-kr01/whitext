@@ -1,17 +1,48 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{
+body {
   background-color: black;
   color: white;
 }
 
-#root{
+#root {
   width: 100%;
-  max-width: 1250px;
+  max-width: 1300px;
   margin: auto;
   position: relative;
 }
+
+/* webkit for scrollbar from line 22 to 48 */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #c8a5a5; /* track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cb4a4a; /* thumb */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6d0404;
+}
+
+/* Want to learn how to apply these webkit on some class; just add class before them */
+/* You can see RightPage.css */ 
+
+
+/* Firefox */
+/* .r-page {
+  scrollbar-width: thin; 
+  scrollbar-color: #0ca806 #111;
+} */

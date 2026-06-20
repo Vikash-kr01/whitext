@@ -1,0 +1,43 @@
+.post{
+    width: 100%;
+    /* background-color: gray; */
+    border: 1px solid gray;
+}
+
+.upper-part-of-post{
+    display: flex;
+}
+
+.post{
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.profile-img{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 52%;
+}
+
+.user-n-post-detail{
+    display: flex;
+    gap: 7px;
+    padding-bottom: 7px;
+}
+
+.fullname{
+    font-size: 16px;
+}
+
+.text-post-content{
+    line-height: 18px;
+    padding-bottom: 10px;
+}
+
+.post-media{
+    width: min-content;
+    border-radius: 10px;
+    /* max-height: 70vh; */
+    height: min(70vh, 400px);
+}

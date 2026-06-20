@@ -2,8 +2,8 @@
     --border: 1px solid gray;
 }
 
-.home {
-  width: 73%;
+.main {
+  width: 1000px;
   display: flex;
   justify-content: space-between;
   position: absolute;
@@ -18,6 +18,11 @@
 .right-page {
   border: var(--border);
   width: 30%;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  height: 100vh;
 }
 
 .for-you-following{
@@ -27,6 +32,8 @@
     justify-content: space-evenly;
     height: 3.5rem;
     backdrop-filter: blur(4px);
+    position: sticky;
+    top: 0px;
 }
 
 .for-you{
@@ -47,8 +54,4 @@
     justify-content: center;
     height: inherit;
     padding: 10px;
-}
-
-.blur-line{
-    backdrop-filter: blur(2px);
 }
