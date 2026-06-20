@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
 
-import MiddlePage from "../components/MiddlePage.jsx";
-import RightPage from "../components/RightPage.jsx";
 import "../style/Notification.css";
 
 const Notification = () => {
