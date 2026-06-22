@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import "./style/miscellanious.css"
+import "./style/miscellaneous.css"
 import { RouterProvider } from 'react-router'
 import router from './router.jsx'
 
