@@ -12,3 +12,5 @@
 ## Set a Global Error Handler
 
 ## in register user controller check a todo?
+
+## give your ApiError to chat-gpt and ask how to hide stack in production
