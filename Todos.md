@@ -8,3 +8,5 @@
 
 
 ## Multer setup with crypto
+
+## Set a Global Error Handler
