@@ -10,3 +10,5 @@
 ## Multer setup with crypto
 
 ## Set a Global Error Handler
+
+## in register user controller check a todo?
