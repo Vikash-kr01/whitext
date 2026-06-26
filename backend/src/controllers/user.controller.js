@@ -39,29 +39,36 @@ const registerUser = asyncHandler(async (req, res) => {
 	const { username, fullName, email, password } = req.body;
 
 	if (
-		[username, fullName, email, password].some((item) => item.trim() === "")
-		// [username, fullName, email, password].some((item) => !item || String(item).trim() === "") // try this it can handle null, undefinded, etc.
+		[username, fullName, email, password].some((item) => typeof item !== "string" || item.trim() === "")
 	) {
 		throw new ApiError(400, "All fields are required");
 	}
 
-	if (!passwordValidator(password) || !emailValidator(email)) {
+	const isEmailValid = emailValidator(email);
+	const isPasswordValid = passwordValidator(password);
+
+	if (!isEmailValid || !isPasswordValid) {
 		throw new ApiError(
 			400,
 			"VALIDATION_ERROR: Please add a validate email and password",
 			[
-				!emailValidator(email) ? { field: "email", message: "Invalid email" } : null,
-				!passwordValidator(password) ? { field: "password", message: "Invalid password" } : null
+				!isEmailValid ? { field: "email", message: "Invalid email" } : null,
+				!ispasswordValid ? { field: "password", message: "Invalid password" } : null
 			].filter(Boolean)  // if any of them or both are true the errors array will contain the same errors
 		)
 	}
 
 	const existedUser = await User.findOne({
-		$or: [{ email, username }]
+		$or: [{ email }, { username }]
 	})
 
 	if (existedUser) {
-		throw new ApiError(409, "ERROR: either email or username already exist")
+		if (existedUser.email === email) {
+			throw new ApiError(409, "Email Already Exists");
+		}
+		if (existedUser.username === username) {
+			throw new ApiError(409, "Username Already Exists");
+		}
 	}
 
 	const user = await User.create({
@@ -114,10 +121,10 @@ const loginUser = asyncHandler(async (req, res) => {
 		throw new ApiError(401, "LOGIN_ERROR: invalid user or password")
 	}
 
-	const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
-
 	const { refreshToken, accessToken } = await generateAccessTokenRefreshToken(user._id);
 	console.log("generated tokens")
+
+	const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
 	const option = {
 		httpOnly: true,
