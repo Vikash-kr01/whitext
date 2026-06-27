@@ -7,7 +7,7 @@
     font-family: sans-serif;
 }
 
-.form {
+.login-form {
     width: 650px;
     height: 450px;
     background: linear-gradient(0deg, #d66712, #00000000);
@@ -27,7 +27,7 @@
     padding: 20px;
 }
 
-form {
+.form {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,7 +35,7 @@ form {
     gap: 23px;
 }
 
-.form input {
+.login-form input {
     padding: 12px;
     width: 400px;
     font-size: 20px;
@@ -46,12 +46,12 @@ form {
     color: #fff;
 }
 
-form .submit {
+.form .submit {
     border-radius: 100px;
     cursor: pointer;
 }
 
-form .submit:disabled {
+.form .submit:disabled {
     cursor: no-drop;
     opacity: 0.5;
 }

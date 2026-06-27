@@ -37,7 +37,7 @@ const Signup = () => {
   return (
     <div className="sign-page">
       <div className="form-card">
-        <h2>User Information</h2>
+        <h2>Register User</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group">
@@ -73,72 +73,40 @@ const Signup = () => {
               <span className='error'>*{errors.email.message}</span>
             }
           </div>
-
           <div className="form-group">
-            <label>Date of Birth</label>
-
-            <div className="dob-row">
-              <select
-                {...register("day", {
-                  required: { value: true, message: "Choose a day" },
-                })}
-              >
-                <option value="">Day</option>
-                {days.map((day) => (
-                  <option key={day} value={day}>
-                    {day}
-                  </option>
-                ))}
-              </select>
-              {errors.day && <span className='error'>*{errors.day.message}</span>}
-
-              <select
-                {...register("month", {
-                  required: { value: true, message: "Choose a month" },
-                })}
-              >
-                <option value="">Month</option>
-                {months.map((month, index) => (
-                  <option key={month} value={index + 1}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-              {errors.month && <span className='error'>*{errors.month.message}</span>}
-
-              <select
-                {...register("year", { required: { value: true, message: "Choose a year" }, })}
-              >
-                <option value="">Year</option>
-                {years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-              {errors.year && <div className='error'>*{errors.year.message}</div>}
-
-            </div>
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              name="username"
+              {...register("username", {
+                required: { value: true, message: "Username is compulsory field" },
+              })}
+            />
+            {
+              errors.username
+              &&
+              <span className='error'>*{errors.username.message}</span>
+            }
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              name="password"
+              {...register("password", {
+                required: { value: true, message: "Email is compulsory field" },
+              })}
+            />
+            {
+              errors.password
+              &&
+              <span className='error'>*{errors.password.message}</span>
+            }
           </div>
 
-          <div className="form-group">
-            <label>Gender</label>
-
-            <select
-              {...register("gender", { required: { value: true, message: "Choose a gender" }, })}
-            >
-              <option value="">Select Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-              <option value="prefer-not-to-say">
-                Prefer not to say
-              </option>
-            </select>
-            {errors.gender && <span className='error'>*{errors.gender.message}</span>}
-
-          </div>
-
+          
           <button type="submit" className="submit-btn">
             Submit
           </button>

@@ -35,9 +35,9 @@ const Login = () => {
 
   return (
     <div className='login'>
-      <div className='form'>
+      <div className='login-form'>
         <h4 className='login-to-whitext'>Login to whitext</h4>
-        <form onSubmit={handleSubmit(onSubmit)} action="/login">
+        <form className='form' onSubmit={handleSubmit(onSubmit)} action="/login">
           <input
             type="text"
             placeholder="Email, username or mobile number"
