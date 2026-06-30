@@ -53,7 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			"VALIDATION_ERROR: Please add a validate email and password",
 			[
 				!isEmailValid ? { field: "email", message: "Invalid email" } : null,
-				!ispasswordValid ? { field: "password", message: "Invalid password" } : null
+				!isPasswordValid ? { field: "password", message: "Invalid password" } : null
 			].filter(Boolean)  // if any of them or both are true the errors array will contain the same errors
 		)
 	}
