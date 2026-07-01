@@ -7,31 +7,29 @@ const Signup = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm();
 
-  const [formData, setFormData] = useState({});
-
-  const years = Array.from(
-    { length: new Date().getFullYear() - 1900 + 1 },
-    (_, i) => new Date().getFullYear() - i
-  );
-
-  const months = [
-    "January", "February", "March", "April",
-    "May", "June", "July", "August",
-    "September", "October", "November", "December"
-  ];
-
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value, })
-  };
-
-
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("http://127.0.0.1:4000/app/api/v1/user/registeruser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      // console.log(response)  // try to console it
+      if(!response.ok){
+        throw new Error(`HTTP ERROR: ${response.status}`)
+      }
+      const result = await response.json();
+      reset();
+    } catch (err) {
+      console.error("Request failed while sending user data to backend:", err.message);
+      reset();  // it reset all the input fields
+    }
   }
 
   return (
@@ -45,15 +43,15 @@ const Signup = () => {
             <input
               type="text"
               placeholder="Enter your full name"
-              {...register("full name", {
+              {...register("fullName", {
                 required: { value: true, message: "Full name is compulsory field" },
                 maxLength: { value: 25, message: "Max length is 25" }
               })}
             />
             {
-              errors["full name"]
+              errors["fullName"]
               &&
-              <span className='error'>*{errors["full name"].message}</span>
+              <span className='error'>*{errors["fullName"].message}</span>
             }
           </div>
 
@@ -96,7 +94,7 @@ const Signup = () => {
               placeholder="Enter your password"
               name="password"
               {...register("password", {
-                required: { value: true, message: "Email is compulsory field" },
+                required: { value: true, message: "Password is compulsory field" },
               })}
             />
             {
@@ -106,7 +104,7 @@ const Signup = () => {
             }
           </div>
 
-          
+
           <button type="submit" className="submit-btn">
             Submit
           </button>
