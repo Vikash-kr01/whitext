@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import "../style/Signup.css"
+
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 const Signup = () => {
   const {
@@ -10,6 +12,12 @@ const Signup = () => {
     formState: { errors },
     reset
   } = useForm();
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/")
+  }
 
   const onSubmit = async (data) => {
     try {
@@ -107,6 +115,9 @@ const Signup = () => {
 
           <button type="submit" className="submit-btn">
             Submit
+          </button>
+          <button onClick={handleClick} className="submit-bt">
+            I Already Have An Account
           </button>
         </form>
       </div>
