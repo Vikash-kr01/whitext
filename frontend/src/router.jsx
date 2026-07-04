@@ -10,6 +10,7 @@ import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
+import ForgetPassword from "./pages/ForgetPassword.jsx";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     {
         Component: AccountLayout,
         children: [
+            {path: "recover", Component: ForgetPassword}
         ]
     },
     {
