@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../style/Login.css"
 
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useForm } from "react-hook-form"
 
 
@@ -30,6 +30,11 @@ const Login = () => {
     await delay(2)
     console.log(data)
     return 
+  }
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/sign-up");
   }
 
 
@@ -62,6 +67,7 @@ const Login = () => {
         </form>
 
         <Link>Forgot password?</Link>
+        <button onClick={handleClick}>Create New Account</button>
       </div>
     </div>
   )
