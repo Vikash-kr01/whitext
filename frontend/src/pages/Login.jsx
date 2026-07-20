@@ -14,9 +14,12 @@ const Login = () => {
     handleSubmit,
     formState: { isValid, isSubmitting },
     // formState link: "https://www.react-hook-form.com/api/useform/formstate/"
+    reset
   } = useForm({
     mode: "onChange",
   });
+
+  const navigate = useNavigate();
 
   const delay = async (d) => {
     return new Promise((resolve, reject) => {
@@ -27,12 +30,29 @@ const Login = () => {
   }
 
   const onSubmit = async (data) => {
-    await delay(2)
-    console.log(data)
-    return 
+    try {
+      const response = await fetch("/app/api/v1/user/login", {
+        // "http://127.0.0.1:4000/app/api/v1/user/login"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+      // console.log(response)  // try to console it
+      if(!response.ok){
+        throw new Error(`HTTP ERROR: ${response.status}`)
+      }
+      const result = await response.json();
+      navigate("/home")
+    } catch (err) {
+      console.error("Request failed while sending user data to backend:", err.message);
+      // reset();  // it reset all the input fields
+    }
   }
 
-  const navigate = useNavigate();
+  
   const handleClick = () => {
     navigate("/sign-up");
   }
