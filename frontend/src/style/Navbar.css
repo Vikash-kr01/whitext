@@ -1,3 +1,7 @@
+:root{
+  --img-size: 2.5rem;
+}
+
 nav {
   background-color: rgb(36, 46, 68);
   color: white;
@@ -5,10 +9,14 @@ nav {
   font-weight: 600;
   font-size: 16px;
   height: 100%;
+  min-height: 640px;
   width: 300px;
   min-width: 250px;
   position: fixed;
   top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 nav ul li {
@@ -46,6 +54,42 @@ ul li a .tag-name {
   font-weight: 600;
 }
 
-.bold .tag-name {
-  font-weight: 700;
+.bold  {
+  font-weight: 900;
+}
+
+
+nav > .nav-profile-link{
+  text-decoration: none;
+  padding: 10px;
+} 
+
+.nav-profile-btn-img{
+  width: var(--img-size);
+  height: var(--img-size);
+  border-radius: 50%;
+  /* object-fit: cover; */
+  overflow: hidden;
+}
+
+.nav-profile-btn-img img {
+  width: var(--img-size);
+  height: var(--img-size);
+  object-fit: cover;
+}
+
+.name-username{
+  text-decoration: none;
+}
+
+.name{
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.username{
+  color: gray;
+  text-decoration-line: none;
+  font-weight: 300;
 }

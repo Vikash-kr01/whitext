@@ -33,14 +33,6 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink className={handleIsActive} to={"/profile"}>
-            <div className="nav-btn">
-              <FcBusinessman className="icon" />
-              <h6 className="tag-name">Profile</h6>
-            </div>
-          </NavLink>
-        </li>
-        <li>
           <NavLink className={handleIsActive} to={"/settings"}>
             <div className="nav-btn">
               <IoMdSettings className="icon" />
@@ -49,6 +41,17 @@ const Navbar = () => {
           </NavLink>
         </li>
       </ul>
+      <NavLink className={`${handleIsActive} nav-profile-link`} to={"/profile"}>
+        <div className="nav-btn nav-profile-btn">
+          <div className="nav-profile-btn-img">
+            <img src="/images/mufasa.jpg" alt="profile-pic" />
+          </div>
+          <div className="name-username">
+            <h4 className="name">Vikash Kumar</h4>
+            <h4 className="username">@vikashsatsangi</h4>
+          </div>
+        </div>
+      </NavLink>
     </nav>
   );
 };
