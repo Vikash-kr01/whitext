@@ -54,7 +54,7 @@ ul li a .tag-name {
   font-weight: 600;
 }
 
-.bold  {
+ul li .bold .tag-name {
   font-weight: 900;
 }
 
