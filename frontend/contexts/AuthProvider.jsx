@@ -59,7 +59,7 @@ export const useUser = () => useContext(UserContext);
 
 
 
-/* from line 2 --> console.log(result) from above
+/* from line 27 --> console.log(result) from above
 
 // here result is coming from req.user(from backend/middlewares/authMiddleware.js)
 // that is why it doesn't contain refreshToken and accessToken like login.jsx does
