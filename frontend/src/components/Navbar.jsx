@@ -3,6 +3,8 @@ import "../style/Navbar.css";
 
 import { NavLink } from "react-router";
 
+import { useUser } from "../../contexts/AuthProvider.jsx";
+
 import { MdHome } from "react-icons/md";
 import { IoMdNotifications } from "react-icons/io";
 import { FcBusinessman } from "react-icons/fc";
@@ -12,6 +14,8 @@ const Navbar = () => {
   const handleIsActive = (e) => {
     return e.isActive ? "bold" : "";
   };
+
+  const { user } = useUser();
 
   return (
     <nav>
@@ -47,8 +51,8 @@ const Navbar = () => {
             <img src="/images/mufasa.jpg" alt="profile-pic" />
           </div>
           <div className="name-username">
-            <h4 className="name">Vikash Kumar</h4>
-            <h4 className="username">@vikashsatsangi</h4>
+            <h4 className="name">{user?.fullName}</h4>
+            <h4 className="username">@{user?.username}</h4>
           </div>
         </div>
       </NavLink>
