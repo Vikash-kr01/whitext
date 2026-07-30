@@ -4,10 +4,10 @@ import AppLayout from "./layouts/AppLayout.jsx";
 import GuestLayout from "./layouts/GuestLayout.jsx";
 import AccountLayout from "./layouts/AccountLayout.jsx"
 
-import Home from "./pages/Home.jsx";
-import Notification from "./pages/Notification.jsx";
-import Profile from "./pages/Profile.jsx";
-import Settings from "./pages/Settings.jsx";
+import Home from "./pages/buttons/Home.jsx";
+import Notification from "./pages/buttons/Notification.jsx";
+import Profile from "./pages/buttons/Profile.jsx";
+import Settings from "./pages/buttons/Settings.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import ForgetPassword from "./pages/ForgetPassword.jsx";

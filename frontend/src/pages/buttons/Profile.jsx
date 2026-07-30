@@ -1,6 +1,6 @@
 import React from "react";
-import "../style/Profile.css";
-import Post from "../components/Post.jsx"
+import "../../style/Profile.css";
+import Post from "../../components/Post.jsx"
 
 import { Link } from "react-router";
 

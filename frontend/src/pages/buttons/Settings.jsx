@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/Setting.css";
+import "../../style/Setting.css";
 
 import { Link } from "react-router";
 

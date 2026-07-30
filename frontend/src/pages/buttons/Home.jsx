@@ -1,6 +1,6 @@
 import React from 'react'
-import "../style/Home.css"
-import Post from '../components/Post'
+import "../../style/Home.css"
+import Post from '../../components/Post.jsx'
 
 const Home = () => {
   return (

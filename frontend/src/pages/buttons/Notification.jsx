@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 
-import "../style/Notification.css";
+import "../../style/Notification.css";
 
 const Notification = () => {
   return (
