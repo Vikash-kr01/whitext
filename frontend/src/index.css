@@ -19,6 +19,13 @@ body {
   position: relative;
 }
 
+/* for Spinner.jsx */
+@keyframes spin { 
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* webkit for scrollbar from line 22 to 48 */
 
 /* Chrome, Edge, Safari */
