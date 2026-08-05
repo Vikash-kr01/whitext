@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
 		(async function () {
 			try {
 				const res = await fetch("/app/api/v1/user/current-user", {
-					method: "POST",
+					method: "get",
 					credentials: "include"
 				})
 				if (!res.ok) {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 				// console.log(result) //see below
 				setUser(result.data)
 			} catch (error) {
-				console.error("while fetching current user", error.message);
+				console.error("Error while fetching current user: ", error.message);
 				setUser(null)
 			} finally {
 				setLoading(false)
