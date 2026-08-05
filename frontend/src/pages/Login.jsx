@@ -23,14 +23,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const delay = async (d) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve()
-      }, d * 1000);
-    })
-  }
-
   const {setUser} = useUser();
 
   const onSubmit = async (data) => {
