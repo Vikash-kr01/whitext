@@ -4,13 +4,14 @@ import AppLayout from "./layouts/AppLayout.jsx";
 import GuestLayout from "./layouts/GuestLayout.jsx";
 import AccountLayout from "./layouts/AccountLayout.jsx"
 
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import ForgetPassword from "./pages/ForgetPassword.jsx";
 import Home from "./pages/buttons/Home.jsx";
 import Notification from "./pages/buttons/Notification.jsx";
 import Profile from "./pages/buttons/Profile.jsx";
 import Settings from "./pages/buttons/Settings.jsx";
-import Signup from "./pages/Signup.jsx";
-import Login from "./pages/Login.jsx";
-import ForgetPassword from "./pages/ForgetPassword.jsx";
+import Logout from "./pages/buttons/Logout.jsx"
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
 			{ path: "profile", Component: Profile },   
 			{ path: "notifications", Component: Notification },   
             { path: "settings", Component: Settings },   
+            { path: "logout", Component: Logout },   
 		],
     },
     {
