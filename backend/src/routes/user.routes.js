@@ -31,6 +31,6 @@ router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/update-account").post(verifyJWT, updateAccountDetail);
 router.route("/update-profile-picture").post(verifyJWT, upload.single("profilePicture"), updatePicture)
 router.route("/update-cover-image").post(verifyJWT, upload.single("coverImage"), updatePicture)
-router.route("/user-details").post(verifyJWT, getUserDetails);
+router.route("/user-details/:username").get(verifyJWT, getUserDetails);
 
 export default router;
