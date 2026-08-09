@@ -57,10 +57,10 @@ const Navbar = () => {
             </h6>
           </div>
         </NavLink>
-        <NavLink className={`${handleIsActive} nav-profile-link`} to={"/profile"}>
+        <NavLink className={`${handleIsActive} nav-profile-link`} to={`/profile/${user?.username}`}>
           <div className="nav-btn nav-profile-btn">
             <div className="nav-profile-btn-img">
-              <img src="/images/mufasa.jpg" alt="profile-pic" />
+              <img src={user?.profilePicture} alt="profile-pic" />
             </div>
             <div className="name-username">
               <h4 className="name">{user?.fullName}</h4>
