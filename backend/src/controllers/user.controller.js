@@ -368,7 +368,8 @@ const getUserDetails = asyncHandler(async (req, res) => {
 				dateOfBirth: 1,
 				followersCount: 1,
 				followingCount: 1,
-				isFollowed: 1
+				isFollowed: 1,
+				createdAt: 1
 			}
 		}
 	])

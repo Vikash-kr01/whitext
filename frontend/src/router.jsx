@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         Component: AppLayout,
         children: [
             { path: "home", Component: Home },   
-			{ path: "profile", Component: Profile },   
+			{ path: "profile/:username", Component: Profile },   
 			{ path: "notifications", Component: Notification },   
             { path: "settings", Component: Settings },   
             { path: "logout", Component: Logout },   

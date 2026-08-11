@@ -1,14 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../style/Profile.css";
-import Post from "../../components/Post.jsx"
+import Post from "../../components/Post.jsx";
+import Spinner from "../../components/Spinner.jsx";
 
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 
 import { IoMdArrowBack } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
+import { FaRegCalendarDays } from "react-icons/fa6";
+import { FaCalendarAlt } from "react-icons/fa";
 
 const Profile = () => {
+
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const { username } = useParams();
+
+  console.log(username)
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const data = await fetch(`/app/api/v1/user/user-details/${username}`, {
+          method: "get",
+          credentials: "include"
+        })
+
+        if (!data.ok) throw new Error("Can't able to fetch user from backend")
+
+        const result = await data.json();
+
+        console.log(result)
+
+        setUser(result.data)
+
+      } catch (error) {
+        console.error(`ERROR: while fethcing user for profile page: ${error.message}`)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [username])
+
+  function convertMonth(time) {
+    let months = [
+      "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ];
+    const strTime = time.toString();
+    const dateInArray = strTime.split("T")[0].split("-")
+    const year = dateInArray[0]
+    const month = Number(dateInArray[1])
+
+    return `${months[month - 1]} ${year}`
+  }
+
+
   const links = ["posts", "comments", "likes"];
+
+  if (loading) return <Spinner />
 
   return (
     <div className="main-body">
@@ -19,7 +69,7 @@ const Profile = () => {
               <IoMdArrowBack />
             </button>
             <div className="userName-postCount">
-              <h4 className="fullname">Anuradha Satsangi</h4>
+              <h4 className="fullname">{user?.fullName}</h4>
               <div className="post-count dim-gray-text">48 posts</div>
             </div>
           </div>
@@ -27,7 +77,7 @@ const Profile = () => {
             <div className="cover">
               <img
                 className="cover-img"
-                src="/images/girl_dummy.jpg"
+                src={user?.coverImage}
                 alt="cover"
               />
             </div>
@@ -35,7 +85,7 @@ const Profile = () => {
               <div className="profile">
                 <img
                   className="profile-pic"
-                  src="/images/girl_two.jpg"
+                  src={user?.profilePicture}
                   alt="profile  "
                 />
               </div>
@@ -44,8 +94,8 @@ const Profile = () => {
           </div>
           <div className="text-details">
             <div className="user-details">
-              <div className="fullname">Anuradha Satsangi</div>
-              <div className="username dim-gray-text">@Anuradhasatsangi</div>
+              <div className="fullname">{user?.fullName}</div>
+              <div className="username dim-gray-text">@{user?.username}</div>
             </div>
             <div className="bio">#Explorer #Patriotic</div>
             <div className="location-nd-joinDate dim-gray-text">
@@ -53,15 +103,18 @@ const Profile = () => {
                 <IoLocationOutline />
                 <p>Bharat</p>
               </div>
-              <div className="join-date ">joined september 2017</div>
+              <div className="join-date">
+                <FaRegCalendarDays />
+                <p>joined {convertMonth(user?.createdAt)}</p>
+              </div>
             </div>
             <div className="following-nd-follower">
               <div className="following-profile">
-                <span>43 </span>
+                <span>{user?.followingCount} </span>
                 <span className="dim-gray-text">following</span>
               </div>
               <div className="follower-profile">
-                <span>980k </span>
+                <span>{user?.followersCount} </span>
                 <span className="dim-gray-text">follower</span>
               </div>
             </div>

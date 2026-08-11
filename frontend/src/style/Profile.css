@@ -93,7 +93,7 @@
   align-items: center;
 }
 
-.location {
+.location, .join-date {
   display: flex;
   gap: 3px;
   align-items: center;
