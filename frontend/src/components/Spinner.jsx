@@ -9,6 +9,7 @@ export default function Spinner() {
 const styles = {
   wrapper: {
     minHeight: "100vh",
+    minWidth: "100vw",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
