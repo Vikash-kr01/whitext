@@ -4,7 +4,6 @@ import "../style/Navbar.css";
 import { NavLink } from "react-router";
 
 import { useUser } from "../../contexts/AuthProvider.jsx";
-import Logout from "../pages/buttons/Logout.jsx";
 
 import { MdHome } from "react-icons/md";
 import { IoMdNotifications } from "react-icons/io";
@@ -53,7 +52,7 @@ const Navbar = () => {
           <div className="nav-btn">
             <RiLogoutBoxFill className="icon" />
             <h6 className="tag-name">
-              <Logout />
+              logout
             </h6>
           </div>
         </NavLink>
