@@ -23,7 +23,7 @@ nav ul li {
   list-style: none;
 }
 
-nav a {
+nav .navbar-btn {
   width: 100%;
   text-decoration: none;
   color: whitesmoke;
@@ -31,8 +31,9 @@ nav a {
   display: inline-block;
 }
 
-nav a:hover .nav-btn {
+nav .navbar-btn:hover .nav-btn {
   background-color: black;
+  cursor: pointer;
 }
 
 .nav-btn {
@@ -45,11 +46,11 @@ nav a:hover .nav-btn {
   border-radius: 30px;
 }
 
-nav a .icon {
+nav .navbar-btn .icon {
   font-size: 28px;
 }
 
-nav a .tag-name {
+nav .navbar-btn .tag-name {
   font-size: 20px;
   font-weight: 600;
 }
@@ -92,4 +93,14 @@ nav > .nav-profile-link{
   color: gray;
   text-decoration-line: none;
   font-weight: 300;
+}
+
+nav button{
+  color: #fff;
+  background-color: transparent;
+  border: none;
+}
+
+nav button:hover{
+  cursor: pointer;
 }
