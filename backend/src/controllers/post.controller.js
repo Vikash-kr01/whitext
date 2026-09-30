@@ -15,12 +15,16 @@ const createPost = asyncHandler(async (req, res) => {
         1> fetch data for post req.body
         2> check data available if not throw error
         3> create post
-        4> 
+        4> return response
     */
 
     const userId = req.user._id;
     const { text, isPublished } = req.body;
     const files = req.files; // comes from multer
+
+    if (!text?.trim() && !files?.length) {
+        throw new ApiError(400, "Post cannot be empty")
+    }
 
     const uploadMedia = await Promise.all( // b>
         // another way to do this from b>
@@ -48,6 +52,8 @@ const createPost = asyncHandler(async (req, res) => {
         isPublished,
         media: uploadMedia
     })
+
+    console.log(post)
 
     return res
         .status(200)
