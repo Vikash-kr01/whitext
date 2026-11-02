@@ -20,7 +20,7 @@ const createPost = asyncHandler(async (req, res) => {
 
     const userId = req.user._id;
     const { text, isPublished } = req.body;
-    const files = req.files; // comes from multer
+    const files = req.files; // a> comes from multer
 
     if (!text?.trim() && !files?.length) {
         throw new ApiError(400, "Post cannot be empty")
@@ -31,6 +31,7 @@ const createPost = asyncHandler(async (req, res) => {
         files.map(async (file, index) => {
             // const resourceType = file.mimetype.startsWith("video") ? "video" : "image";
             const result = await uploadOnCloudinary(file.path);
+            // console.log(result)  // <c
 
             return {
                 publicId: result.public_id,
@@ -342,4 +343,32 @@ export {
         order: i
       });
     }
+*/
+
+
+/*  c> console.log(result)
+    {
+        asset_id: '91ed312992d22ce061c6514c6cbfe523',
+        public_id: 'tw86h6ypsgr2w92tsgse',
+        version: 1793613735,
+        version_id: '66e2a9c25acb2cf1d5d741ffab54d87c',
+        signature: '3afb2925fdcc9dd6edbf4a0801e36e810bc58e57',
+        width: 1024,
+        height: 1024,
+        format: 'jpg',
+        resource_type: 'image',
+        created_at: '2026-11-02T10:02:15Z',
+        tags: [],
+        bytes: 212806,
+        type: 'upload',
+        etag: '40dbb4e746463fbb8e1fbbd1385ce4a0',
+        placeholder: false,
+        url: 'http://res.cloudinary.com/vikashkumar/image/upload/v1793613735/tw86h6ypsgr2w92tsgse.jpg',
+        secure_url: 'https://res.cloudinary.com/vikashkumar/image/upload/v1793613735/tw86h6ypsgr2w92tsgse.jpg',
+        asset_folder: '',
+        display_name: 'tw86h6ypsgr2w92tsgse',
+        original_filename: '_c9a0c8c9-fd5c-4811-9119-4e3519c2c63e',
+        api_key: '153493284568277'
+    }
+
 */
